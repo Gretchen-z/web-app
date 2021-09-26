@@ -1,0 +1,81 @@
+###
+# Registration
+POST https://localhost:8443/rest/users/register
+Content-Type: application/json
+
+{
+  "username": {{$uuid}},
+  "password": "top-secret"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
+###
+
+POST https://localhost:8443/rest/users/login
+Content-Type: application/json
+
+{
+  "username": "fufuck",
+  "password": "god"
+}
+
+###
+
+POST https://localhost:8443/rest/users/login
+Content-Type: application/json
+
+{
+  "username": "7269dc66-fbc2-468b-b90b-99c9eee7300a",
+  "password": "wash"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
+###
+
+GET https://localhost:8443/cards.getAll
+Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
+
+###
+GET https://localhost:8443/rest/cards/1
+Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
+
+###
+DELETE https://localhost:8443/cards.blockById
+Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
+CardID: 1
+
+###
+POST https://localhost:8443/cards.order
+Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
+
+###
+POST https://localhost:8443/cards.transfer
+Content-Type: application/json
+Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
+
+{
+  "cardIdFrom": 3,
+  "cardIdTo": 2,
+   "amount" : 94000
+}
+
+
+###
+POST https://localhost:8443/rest/users/restore
+Content-Type: application/json
+
+{
+  "username": "7269dc66-fbc2-468b-b90b-99c9eee7300a",
+  "restoreCode": "",
+  "newPassword" : ""
+}
