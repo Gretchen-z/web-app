@@ -52,7 +52,6 @@ Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKk
 ###
 DELETE https://localhost:8443/cards/1
 Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
-CardID: 1
 
 ###
 POST https://localhost:8443/cards/order

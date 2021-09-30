@@ -78,8 +78,8 @@ public class CardHandler { // Servlet -> Controller -> Service (domain) -> domai
 
     public void blockById(HttpServletRequest req, HttpServletResponse resp) {
         log.log(Level.INFO, "blockById");
-        long cardId = Long.parseLong(req.getHeader("cardId"));
 
+        final var cardId = Long.parseLong(((Matcher) req.getAttribute(RequestAttributes.PATH_MATCHER_ATTR)).group("cardId"));
         final var user = UserHelper.getUser(req);
         try {
             try {
