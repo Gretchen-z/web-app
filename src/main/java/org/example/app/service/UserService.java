@@ -5,22 +5,17 @@ import lombok.RequiredArgsConstructor;
 import org.example.app.domain.RestoreCode;
 import org.example.app.domain.User;
 import org.example.app.domain.UserWithPassword;
-import org.example.app.dto.*;
 import org.example.app.exception.PasswordNotMatchesException;
 import org.example.app.exception.RegistrationException;
 import org.example.app.exception.UserNotFoundException;
 import org.example.app.exception.WrongAccessException;
 import org.example.app.jpa.JpaTransactionTemplate;
 import org.example.app.repository.UserRepository;
-import org.example.framework.security.*;
 import org.example.framework.util.KeyValue;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -125,7 +120,7 @@ public class UserService implements AuthenticationProvider, AnonymousProvider {
 
   private void changeCredentials(RestoreAccountRequestDto restoreInfo) {
     User user = repository.getByUsername(restoreInfo.getUsername()).orElseThrow(() -> new UserNotFoundException());
-    RestoreCode restoreCode = repository.getRestoreCodeById(user.getId()).orElseThrow(() -> new RestoreCodeNotFound());
+    RestoreCode restoreCode = repository.getRestoreCodeById(user.getId()).orElseThrow(() -> new RestoreCodeNotFoundException());
 
     String incomingCode = restoreInfo.getRestoreCode();
     String storedCode = restoreCode.getCode();

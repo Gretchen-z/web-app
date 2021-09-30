@@ -13,13 +13,12 @@ import org.example.app.dto.RestoreAccountResponseDto;
 import org.example.app.exception.UserNotFoundException;
 import org.example.app.exception.WrongAccessException;
 import org.example.app.service.CardService;
-import org.example.app.service.RestoreCodeNotFound;
+import org.example.app.service.RestoreCodeNotFoundException;
 import org.example.app.service.UserService;
 import org.example.framework.attribute.RequestAttributes;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
 
 @Log
 @RequiredArgsConstructor
@@ -60,7 +59,7 @@ public class UserHandler {
         final var responseDto = service.restoreCredentials(requestDto);
         resp.setHeader("Content-Type", "application/json");
         resp.getWriter().write(gson.toJson(responseDto));
-      } catch (UserNotFoundException | RestoreCodeNotFound | WrongAccessException e) {
+      } catch (UserNotFoundException | RestoreCodeNotFoundException | WrongAccessException e) {
         resp.sendError(403);
       }
     } catch (IOException e) {
