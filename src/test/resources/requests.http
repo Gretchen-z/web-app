@@ -42,7 +42,7 @@ client.test("Request executed successfully", function() {
 
 ###
 
-GET https://localhost:8443/cards.getAll
+GET https://localhost:8443/cards
 Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
 
 ###
@@ -50,16 +50,16 @@ GET https://localhost:8443/rest/cards/1
 Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
 
 ###
-DELETE https://localhost:8443/cards.blockById
+DELETE https://localhost:8443/cards/1
 Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
 CardID: 1
 
 ###
-POST https://localhost:8443/cards.order
+POST https://localhost:8443/cards/order
 Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
 
 ###
-POST https://localhost:8443/cards.transfer
+POST https://localhost:8443/cards/transfer
 Content-Type: application/json
 Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
 

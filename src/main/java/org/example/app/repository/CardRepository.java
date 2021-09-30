@@ -21,7 +21,7 @@ public class CardRepository {
     public List<Card> getAllByOwnerId(long ownerId) {
         // language=PostgreSQL
         return jdbcTemplate.queryAll(
-                "SELECT id, number, balance FROM cards WHERE \"ownerId\" = ? AND active = TRUE",
+                "SELECT id, number, \"ownerId\", balance FROM cards WHERE \"ownerId\" = ? AND active = TRUE",
                 cardRowMapper,
                 ownerId
         );
@@ -30,7 +30,7 @@ public class CardRepository {
     public Optional<Card> getCardById(long cardId) {
         return jdbcTemplate.queryOne(
                 // language=PostgreSQL
-                "SELECT id, number, balance, \"ownerId\" FROM cards WHERE \"ownerId\" = ? AND active = TRUE",
+                "SELECT id, number, \"ownerId\", balance, \"ownerId\" FROM cards WHERE id = ? AND active = TRUE",
                 cardRowMapper, cardId);
     }
 
