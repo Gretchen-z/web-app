@@ -122,8 +122,8 @@ public class UserService implements AuthenticationProvider, AnonymousProvider {
     User user = repository.getByUsername(restoreInfo.getUsername()).orElseThrow(UserNotFoundException::new);
     RestoreCode restoreCode = repository.getRestoreCodeById(user.getId()).orElseThrow(RestoreCodeNotFoundException::new);
 
-    String incomingCode = restoreInfo.getRestoreCode();
-    String storedCode = restoreCode.getCode();
+    final var incomingCode = restoreInfo.getRestoreCode();
+    final var storedCode = restoreCode.getCode();
 
     if (incomingCode.equals(storedCode)) {
       final var password = restoreInfo.getNewPassword().trim();
