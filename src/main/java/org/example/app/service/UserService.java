@@ -15,6 +15,7 @@ import org.example.framework.security.*;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Random;
 
@@ -110,7 +111,7 @@ public class UserService implements AuthenticationProvider, AnonymousProvider {
 
     User user = repository.getByUsername(username).orElseThrow(() -> new UserNotFoundException());
 
-    Random rnd = new Random();
+    final var rnd = new SecureRandom();
     int number = rnd.nextInt(999999);
     final var code = String.format("%06d", number);
 
