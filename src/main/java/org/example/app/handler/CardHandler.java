@@ -30,15 +30,15 @@ public class CardHandler { // Servlet -> Controller -> Service (domain) -> domai
         try {
             // cards.getAll?ownerId=1
             final var user = UserHelper.getUser(req);
-            final List<Card> data;
             try {
-                data = service.getAllByOwnerId(user, user.getId());
+                final var data = service.getAllByOwnerId(user, user.getId());
+                resp.setHeader("Content-Type", "application/json");
+                resp.getWriter().write(gson.toJson(data));
             } catch (WrongAccessException e) {
                 resp.sendError(403);
                 return;
             }
-            resp.setHeader("Content-Type", "application/json");
-            resp.getWriter().write(gson.toJson(data));
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
