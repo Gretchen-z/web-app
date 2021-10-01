@@ -58,14 +58,14 @@ POST https://localhost:8443/cards/order
 Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
 
 ###
-POST https://localhost:8443/cards/transfer
+POST https://localhost:8443/rest/cards/transfer
 Content-Type: application/json
-Authorization: 0fw3G1NzTFwodUKPp/MO6+LnLm2FTYwswb6sdPamKZKzr9URJsmvDdgBII1aLQzKkLWQi1P3hkgBTl02aG36Xg==
+Authorization: RMV+M9AUDuIXBdVbVxzsNwgyG9zDG4wN8YXK4ul9znaanPmuCReW2tssoQlBo9Av03lbc32UNYUVUvGko5yXyA==
 
 {
-  "cardIdFrom": 3,
-  "cardIdTo": 2,
-   "amount" : 94000
+  "cardNumFrom": "16187882",
+  "cardNumTo": "00639172",
+  "amount" : 1000
 }
 
 

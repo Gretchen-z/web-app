@@ -34,6 +34,13 @@ public class CardRepository {
                 cardRowMapper, cardId);
     }
 
+    public Optional<Card> getCardByNumber(String cardNumber) {
+        return jdbcTemplate.queryOne(
+                // language=PostgreSQL
+                "SELECT id, number, \"ownerId\", balance, \"ownerId\" FROM cards WHERE cards.number = ? AND active = TRUE",
+                cardRowMapper, cardNumber);
+    }
+
     public void blockCardById(long cardId) {
         jdbcTemplate.update(
                 //language=PostgreSQL
@@ -44,14 +51,14 @@ public class CardRepository {
                         """, cardId);
     }
 
-    public Optional<Card> createCard(long userId) {
+    public Optional<Card> createCard(long userId, String newCardNumber) {
         return jdbcTemplate.queryOne(
                 //language=PostgreSQL
                 """
                         INSERT INTO cards("ownerId", number, balance, active)
-                        VALUES (?,  '**** *123', 0, true)
+                        VALUES (?,  ?, 0, true)
                         RETURNING id, "ownerId", number, balance, active;
-                        """, cardRowMapper, userId);
+                        """, cardRowMapper, userId, newCardNumber);
     }
 
     public void updateCardBalance(long cardId, long newBalance) {
@@ -62,5 +69,15 @@ public class CardRepository {
                         SET balance=?
                         WHERE cards.id = ?
                         """, newBalance, cardId);
+    }
+
+
+    public boolean isCardNumberExist(String cardNumber) {
+        //language=PostgreSQL
+        return jdbcTemplate.queryOne(
+                "SELECT EXISTS(select 1 from cards where cards.number = ?);",
+                rs -> rs.getBoolean(1),
+                cardNumber)
+                .orElse(false);
     }
 }

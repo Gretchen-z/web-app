@@ -10,6 +10,7 @@ import org.example.app.exception.WrongAccessException;
 import org.example.app.repository.CardRepository;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,12 +58,19 @@ public class CardService {
     }
 
     public Card orderNewCard(long userId) {
-       return cardRepository.createCard(userId).orElseThrow(() -> new RuntimeException("Ошибка создания карты"));
+        String newCardNumberString;
+        do {
+            SecureRandom rnd = new SecureRandom();
+            int newCardNumber = rnd.nextInt(99999999);
+            newCardNumberString = String.format("%08d", newCardNumber);
+        } while (cardRepository.isCardNumberExist(newCardNumberString));
+
+        return cardRepository.createCard(userId, newCardNumberString).orElseThrow(() -> new RuntimeException("Ошибка создания карты"));
     }
 
     public TransferResponseDto transfer(User user, TransferRequestDto transferOrder) {
-        final var cardFrom = cardRepository.getCardById(transferOrder.getCardIdFrom()).orElseThrow(() -> new CardNotFoundException("Карта не найдена"));
-        final var cardTo = cardRepository.getCardById(transferOrder.getCardIdTo()).orElseThrow(() -> new CardNotFoundException("Карта не найдена"));
+        final var cardFrom = cardRepository.getCardByNumber(transferOrder.getCardNumFrom()).orElseThrow(() -> new CardNotFoundException("Карта не найдена"));
+        final var cardTo = cardRepository.getCardByNumber(transferOrder.getCardNumTo()).orElseThrow(() -> new CardNotFoundException("Карта не найдена"));
 
         if (cardFrom.getOwnerId() != user.getId()) {
             throw new WrongAccessException();
@@ -71,8 +79,8 @@ public class CardService {
         final var amount = transferOrder.getAmount();
 
         final var transferResponseDto = new TransferResponseDto();
-        transferResponseDto.setCardIdFrom(cardFrom.getId());
-        transferResponseDto.setCardIdTo(cardTo.getId());
+        transferResponseDto.setCardNumFrom(cardFrom.getNumber());
+        transferResponseDto.setCardNumTo(cardTo.getNumber());
         transferResponseDto.setAmount(amount);
 
         if (amount <= 0 || cardFrom.getBalance() < amount) {
@@ -89,4 +97,5 @@ public class CardService {
         transferResponseDto.setStatus("Успешно");
         return transferResponseDto;
     }
+
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class TransferRequestDto {
-    private long cardIdFrom;
-    private long cardIdTo;
+    private String cardNumFrom;
+    private String cardNumTo;
     private long amount;
 }
