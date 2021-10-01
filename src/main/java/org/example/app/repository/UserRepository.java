@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.app.domain.RestoreCode;
 import org.example.app.domain.User;
 import org.example.app.domain.UserWithPassword;
+import org.example.app.exception.UserNotFoundException;
 import org.example.framework.security.Roles;
 import org.example.jdbc.JdbcTemplate;
 import org.example.jdbc.RowMapper;
@@ -81,33 +82,31 @@ public class UserRepository {
   // TODO: DuplicateKeyException <-
   public Optional<User> save(long id, String username, String hash) {
 
-     return id == 0 ? saveNewUser(username, hash) : updateUser(id, username, hash);
+     return id == 0 ? saveNewUser(username, hash) : updateUser(id, hash);
   }
 
+    private Optional<User> updateUser(long id, String hash) {
+        User user = jdbcTemplate.queryOne(
+                """
+                        UPDATE users SET password = ? WHERE id = ? RETURNING id, username
+                        """,
+                rowMapperWithoutRole,
+                hash, id
+        ).orElseThrow(UserNotFoundException::new);
 
-  private Optional<User> updateUser(long id, String username, String hash) {
-      User user = jdbcTemplate.queryOne(
-              """
-                      UPDATE users SET username = ?, password = ? WHERE id = ? RETURNING id, username
-                      """,
-              rowMapperWithoutRole,
-              username, hash, id
-      ).get();
-
-      List<String> roles = jdbcTemplate.queryOne(
-              // language=PostgreSQL
-              """
-                      SELECT r."roleName"
-                       FROM roles r
-                       INNER JOIN user_roles ur ON (ur."roleId" = r.id)
-                       WHERE ur."userId" = ?
-                         """,
-              roleRowMapper, id
-      ).get();
-
-      user.setRoles(roles);
-      return Optional.of(user);
-  }
+        List<String> roles = jdbcTemplate.queryAll(
+                // language=PostgreSQL
+                """
+                        SELECT r."roleName"
+                         FROM roles r
+                         INNER JOIN user_roles ur ON (ur."roleId" = r.id)
+                         WHERE ur."userId" = ?
+                           """,
+                rs -> rs.getString("roleName"), id
+        );
+        user.setRoles(roles);
+        return Optional.of(user);
+    }
 
   private Optional<User> saveNewUser(String username, String hash) {
       User user = jdbcTemplate.queryOne(
