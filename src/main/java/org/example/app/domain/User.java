@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.example.framework.security.Authentication;
 
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,5 +17,6 @@ public class User {
   public User(long id, String username) {
     this.id = id;
     this.username = username;
+    roles = Collections.emptyList();
   }
 }
